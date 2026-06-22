@@ -1,15 +1,23 @@
 require("dotenv").config();
+
 const app = require("./app");
 const db = require("./config/database");
 
-db.sync({ alter: true })
-  .then(() => {
-    console.log("Database connected");
-  })
-  .catch((err) => {
-    console.log("Database connection failed:", err);
-  });
+const PORT = process.env.PORT || 5000;
 
-app.listen(5000, () => {
-  console.log("Server running on port 5000");
-});
+db.authenticate()
+.then(() => {
+   console.log("Database connected");
+
+   app.listen(PORT, () => {
+      console.log(
+        `Server running on port ${PORT}`
+      );
+   });
+})
+  .catch((err) => {
+    console.log(
+      "Database connection failed:",
+      err
+    );
+  });
